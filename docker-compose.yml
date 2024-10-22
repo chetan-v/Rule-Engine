@@ -1,0 +1,32 @@
+version: '3'
+services:
+  db:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: rule_engine
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./db:/docker-entrypoint-initdb.d/
+
+  backend:
+    build: ./server
+    environment:
+      DATABASE_URL: postgres://user:password@db:5432/rule_engine
+    ports:
+      - "5000:5000"  # Change this to expose the backend on port 5000
+    depends_on:
+      - db
+    volumes:
+      - ./server:/usr/src/app  # Mount local server folder to container
+    command: npm run dev  # Use nodemon for live updates
+
+  frontend:
+    build: ./client
+    ports:
+      - "3000:3000"  # Keep frontend on port 3000
+    volumes:
+      - ./client:/usr/src/app  # Mount local client folder to container
+    command: npm start  # React dev server for live updates

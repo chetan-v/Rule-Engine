@@ -1,0 +1,7 @@
+CREATE TABLE rules (
+  id SERIAL PRIMARY KEY,
+  ruleString VARCHAR NOT NULL,
+  ast JSONB NOT NULL,
+  createdAt TIMESTAMP DEFAULT NOW(),
+  updatedAt TIMESTAMP DEFAULT NOW()
+);
