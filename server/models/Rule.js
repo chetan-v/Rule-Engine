@@ -1,21 +1,8 @@
-const { DataTypes } = require("sequelize");
-const sequelize = require("../config/database");
+const mongoose = require("mongoose");
 
-const Rule = sequelize.define(
-  "Rule",
-  {
-    ruleString: {
-      type: DataTypes.STRING, // Stores the rule as a string (e.g., "age > 30 AND department = 'Sales'")
-      allowNull: false,
-    },
-    ast: {
-      type: DataTypes.JSONB, // Stores the rule's AST in JSON format
-      allowNull: false,
-    },
-  },
-  {
-    timestamps: true,
-  }
-);
+const RuleSchema = new mongoose.Schema({
+  name: { type: String, required: true }, // Rule name
+  ast: { type: mongoose.Schema.Types.Mixed, required: true }, // Store the AST as a flexible object
+});
 
-module.exports = Rule;
+module.exports = mongoose.model("Rule", RuleSchema);

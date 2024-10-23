@@ -1,32 +1,41 @@
-version: '3'
+version: '3.8'  # Specify the Docker Compose version
+
 services:
-  db:
-    image: postgres:latest
-    environment:
-      POSTGRES_USER: user
-      POSTGRES_PASSWORD: password
-      POSTGRES_DB: rule_engine
-    ports:
-      - "5432:5432"
+  server:
+    build:
+      context: ./server  # Path to your server Dockerfile and source code
+      dockerfile: Dockerfile
+    container_name: rule-engine-server  # Optional: name of the server container
     volumes:
-      - ./db:/docker-entrypoint-initdb.d/
-
-  backend:
-    build: ./server
-    environment:
-      DATABASE_URL: postgres://user:password@db:5432/rule_engine
+      - ./server:/usr/src/app  # Mount the server source code to the container
+      - /usr/src/app/node_modules  # Ensure node_modules is not overwritten
     ports:
-      - "5000:5000"  # Change this to expose the backend on port 5000
+      - "5000:5000"  # Map port 5000 on the host to port 5000 in the container
+    environment:
+      - MONGO_URL=mongodb://mongo:27017/rule-engine  # MongoDB connection string
     depends_on:
-      - db
-    volumes:
-      - ./server:/usr/src/app  # Mount local server folder to container
-    command: npm run dev  # Use nodemon for live updates
+      - mongo  # Wait for MongoDB to be ready
 
-  frontend:
-    build: ./client
-    ports:
-      - "3000:3000"  # Keep frontend on port 3000
+  client:
+    build:
+      context: ./client  # Path to your client Dockerfile and source code
+      dockerfile: Dockerfile
+    container_name: rule-engine-client  # Optional: name of the client container
     volumes:
-      - ./client:/usr/src/app  # Mount local client folder to container
-    command: npm start  # React dev server for live updates
+      - ./client:/usr/src/app  # Mount the client source code to the container
+      - /usr/src/app/node_modules  # Ensure node_modules is not overwritten
+    ports:
+      - "3000:3000"  # Map port 3000 on the host to port 3000 in the container
+    depends_on:
+      - server  # Wait for the server to be ready
+
+  mongo:
+    image: mongo:6.0  # MongoDB version 6.0
+    container_name: rule-engine-db  # Optional: name of the MongoDB container
+    ports:
+      - "27017:27017"  # Expose MongoDB port
+    volumes:
+      - mongo-data:/data/db  # Persistent volume for MongoDB data
+
+volumes:
+  mongo-data:
