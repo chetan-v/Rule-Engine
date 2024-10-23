@@ -66,48 +66,6 @@ This project is a rule engine application that uses an Abstract Syntax Tree (AST
 
 To run this application on different machines, ensure that Docker and Docker Compose are installed on each machine. Follow the same steps as above to clone the repository and start the application using Docker Compose.
 
-### Code References
-
-- **App Component**: Handles the main logic for creating, evaluating, and combining rules.
-
-  - Reference:
-    ```javascript:client/src/App.js
-    startLine: 5
-    endLine: 121
-    ```
-
-- **AST Parser**: Contains functions for parsing, combining, and evaluating rules.
-
-  - Reference:
-    ```javascript:server/utils/astParser.js
-    startLine: 1
-    endLine: 86
-    ```
-
-- **API Routes**: Defines the endpoints for rule operations.
-
-  - Reference:
-    ```javascript:server/routes/api.js
-    startLine: 1
-    endLine: 121
-    ```
-
-- **Rule Model**: Mongoose model for storing rules in MongoDB.
-  - Reference:
-    ```javascript:server/models/Rule.js
-    startLine: 1
-    endLine: 8
-    ```
-
-### Troubleshooting
-
-- Ensure that all services are running by checking the Docker containers with `docker ps`.
-- If there are issues with MongoDB, ensure that the `mongo` service is running and accessible.
-
-## License
-
-This project is licensed under the ISC License - see the LICENSE file for details.
-
 ## Author
 
 Chetan Verma
