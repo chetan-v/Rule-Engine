@@ -65,6 +65,8 @@ This project is a rule engine application that uses an Abstract Syntax Tree (AST
 ### Running on Different Machines
 
 To run this application on different machines, ensure that Docker and Docker Compose are installed on each machine. Follow the same steps as above to clone the repository and start the application using Docker Compose.
+## Pic
+![image](https://github.com/user-attachments/assets/99bf40dc-5d6b-4576-9067-e60ab9b7b9a5)
 
 ## Author
 
